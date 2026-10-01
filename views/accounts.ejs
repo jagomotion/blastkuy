@@ -1,0 +1,49 @@
+<div class="page-header">
+<h1>Akun WhatsApp</h1>
+<p>Hubungkan akun WhatsApp kamu untuk mulai broadcast</p>
+</div>
+
+<div class="grid-2">
+<div class="card">
+<h2><span class="material-symbols-outlined">add_circle</span> Tambah Akun</h2>
+<form id="connect-form">
+<div class="form-group">
+<label>Nomor WhatsApp</label>
+<input type="text" name="phone" placeholder="628xxxxxxxxxx" required>
+<small class="muted">Gunakan format internasional tanpa tanda + dan spasi</small>
+</div>
+<div class="form-group">
+<label>Metode Koneksi</label>
+<select name="method">
+<option value="pairing">Pairing Code</option>
+<option value="qr">QR Code</option>
+</select>
+</div>
+<button type="submit" class="btn btn-primary btn-block">
+<span class="material-symbols-outlined">link</span> Hubungkan
+</button>
+</form>
+<div id="connect-result" class="connect-result"></div>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">devices</span> Akun Terhubung</h2>
+<div id="accounts-list" class="accounts-list">
+<% if (user.accounts && user.accounts.length > 0) { %>
+<% user.accounts.forEach(function(acc) { %>
+<div class="account-item" data-id="<%= acc.id %>">
+<div class="account-info">
+<span class="material-symbols-outlined">smartphone</span>
+<div>
+<strong><%= acc.phone %></strong>
+<small class="status status-<%= acc.status %>"><%= acc.status %></small>
+</div>
+</div>
+</div>
+<% }) %>
+<% } else { %>
+<p class="muted empty">Belum ada akun terhubung</p>
+<% } %>
+</div>
+</div>
+</div>

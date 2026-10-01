@@ -1,0 +1,35 @@
+<div class="page-header">
+<h1>Monitoring Pesan</h1>
+<p>Log 200 pesan terakhir</p>
+</div>
+
+<div class="card">
+<% if (messages.length === 0) { %>
+<p class="muted empty">Belum ada pesan</p>
+<% } else { %>
+<div class="table-wrap">
+<table class="table">
+<thead>
+<tr>
+<th>Waktu</th>
+<th>User</th>
+<th>Nomor Customer</th>
+<th>Akun</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<% messages.forEach(function(m) { %>
+<tr>
+<td><%= new Date(m.sentAt).toLocaleString('id-ID') %></td>
+<td><%= m.userName %></td>
+<td><%= m.customerPhone %></td>
+<td><%= m.accountPhone || '-' %></td>
+<td><span class="badge badge-<%= m.status === 'sent' ? 'approved' : 'rejected' %>"><%= m.status %></span></td>
+</tr>
+<% }) %>
+</tbody>
+</table>
+</div>
+<% } %>
+</div>

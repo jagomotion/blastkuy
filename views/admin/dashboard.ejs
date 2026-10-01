@@ -1,0 +1,179 @@
+<div class="page-header">
+  <h1>Admin Dashboard</h1>
+  <p>Monitoring aktivitas sistem BlastYuk</p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-primary">group</span>
+    <div>
+      <h3><%= users.length %></h3>
+      <p>Total User</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-success">bolt</span>
+    <div>
+      <h3><%= activeUsers %></h3>
+      <p>User Aktif 24 Jam</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-primary">send</span>
+    <div>
+      <h3><%= totalSent %></h3>
+      <p>Total Terkirim</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-danger">error</span>
+    <div>
+      <h3><%= totalFailed %></h3>
+      <p>Total Gagal</p>
+    </div>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-success">phone_iphone</span>
+    <div>
+      <h3><%= connectedAccounts %> / <%= totalAccounts %></h3>
+      <p>Akun WA Terhubung</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-warning">contacts</span>
+    <div>
+      <h3><%= availableCustomers %></h3>
+      <p>Customer Tersedia</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-primary">task_alt</span>
+    <div>
+      <h3><%= usedCustomers %></h3>
+      <p>Customer Terpakai</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-warning">payments</span>
+    <div>
+      <h3>Rp <%= totalBalance.toLocaleString('id-ID') %></h3>
+      <p>Total Saldo User</p>
+    </div>
+  </div>
+</div>
+
+<% if (pendingWithdrawals > 0) { %>
+<div class="alert alert-warning">
+  <span class="material-symbols-outlined">warning</span>
+  <span><strong><%= pendingWithdrawals %></strong> permintaan withdraw pending senilai <strong>Rp <%= pendingAmount.toLocaleString('id-ID') %></strong></span>
+  <a href="/admin/withdrawals">Kelola</a>
+</div>
+<% } %>
+
+<div class="grid-2">
+  <div class="card">
+    <h2><span class="material-symbols-outlined">today</span> Aktivitas Hari Ini</h2>
+    <div class="activity-stats">
+      <div class="activity-item">
+        <span class="material-symbols-outlined icon-success">check_circle</span>
+        <div>
+          <strong><%= todaySent %></strong>
+          <small>Pesan terkirim hari ini</small>
+        </div>
+      </div>
+      <div class="activity-item">
+        <span class="material-symbols-outlined icon-danger">cancel</span>
+        <div>
+          <strong><%= todayFailed %></strong>
+          <small>Pesan gagal hari ini</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="material-symbols-outlined">trophy</span> Top 5 User</h2>
+    <div class="top-users">
+      <% if (topUsers.length === 0) { %>
+        <p class="muted empty">Belum ada data</p>
+      <% } else { %>
+        <% topUsers.forEach(function(u, i) { %>
+        <div class="top-user-item">
+          <span class="rank rank-<%= i + 1 %>"><%= i + 1 %></span>
+          <div class="user-info-compact">
+            <strong><%= u.name %></strong>
+            <small><%= u.totalSent || 0 %> pesan terkirim</small>
+          </div>
+        </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2><span class="material-symbols-outlined">bolt</span> Akses Cepat</h2>
+  <div class="quick-actions">
+    <a href="/admin/users" class="quick-action">
+      <span class="material-symbols-outlined">manage_accounts</span>
+      <span>Kelola User</span>
+    </a>
+    <a href="/admin/accounts" class="quick-action">
+      <span class="material-symbols-outlined">devices</span>
+      <span>Akun WhatsApp</span>
+    </a>
+    <a href="/admin/customers" class="quick-action">
+      <span class="material-symbols-outlined">contacts</span>
+      <span>Database Customer</span>
+    </a>
+    <a href="/admin/withdrawals" class="quick-action">
+      <span class="material-symbols-outlined">payments</span>
+      <span>Withdraw</span>
+    </a>
+    <a href="/admin/activity" class="quick-action">
+      <span class="material-symbols-outlined">history</span>
+      <span>Aktivitas</span>
+    </a>
+    <a href="/admin/settings" class="quick-action">
+      <span class="material-symbols-outlined">tune</span>
+      <span>Pengaturan</span>
+    </a>
+  </div>
+</div>
+
+<div class="card">
+  <h2><span class="material-symbols-outlined">history</span> Pesan Terbaru</h2>
+  <% if (recentMessages.length === 0) { %>
+    <p class="muted empty">Belum ada aktivitas</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Waktu</th>
+            <th>User</th>
+            <th>Nomor Tujuan</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentMessages.forEach(function(m) { %>
+          <tr>
+            <td><%= new Date(m.sentAt).toLocaleString('id-ID') %></td>
+            <td><%= m.userName %></td>
+            <td><%= m.customerPhone %></td>
+            <td>
+              <span class="badge badge-<%= m.status === 'sent' ? 'approved' : 'rejected' %>">
+                <%= m.status %>
+              </span>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

@@ -1,0 +1,82 @@
+<div class="page-header">
+<h1>Dashboard</h1>
+<p>Pantau pergerakan pesan dan penghasilan kamu</p>
+</div>
+
+<div class="stats-grid">
+<div class="stat-card">
+<span class="material-symbols-outlined icon-primary">send</span>
+<div>
+<h3><%= sent %></h3>
+<p>Pesan Terkirim</p>
+</div>
+</div>
+<div class="stat-card">
+<span class="material-symbols-outlined icon-danger">error</span>
+<div>
+<h3><%= failed %></h3>
+<p>Pesan Gagal</p>
+</div>
+</div>
+<div class="stat-card">
+<span class="material-symbols-outlined icon-success">group</span>
+<div>
+<h3><%= totalCustomers %></h3>
+<p>Database Customer</p>
+</div>
+</div>
+<div class="stat-card">
+<span class="material-symbols-outlined icon-warning">account_balance_wallet</span>
+<div>
+<h3>Rp <%= user.balance.toLocaleString('id-ID') %></h3>
+<p>Saldo Kamu</p>
+</div>
+</div>
+</div>
+
+<div class="grid-2">
+<div class="card">
+<h2><span class="material-symbols-outlined">trending_up</span> Penghasilan</h2>
+<p class="muted">Total penghasilan dari <%= sent %> pesan terkirim</p>
+<h2 class="big-number">Rp <%= earnings.toLocaleString('id-ID') %></h2>
+<a href="/withdraw" class="btn btn-primary">Tarik Saldo</a>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">share</span> Referral</h2>
+<p class="muted">Undang teman dan dapatkan komisi setiap pesan terkirim</p>
+<div class="ref-code">
+<span>Kode: <strong><%= user.referralCode %></strong></span>
+<button class="btn-icon" onclick="copyRef('<%= user.referralCode %>')">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+</div>
+<p class="muted">Total komisi: <strong>Rp <%= (user.referralEarnings || 0).toLocaleString('id-ID') %></strong></p>
+</div>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">bolt</span> Mulai Cepat</h2>
+<div class="quick-actions">
+<a href="/accounts" class="quick-action">
+<span class="material-symbols-outlined">phone_iphone</span>
+<span>Hubungkan Akun</span>
+</a>
+<a href="/broadcast" class="quick-action">
+<span class="material-symbols-outlined">send</span>
+<span>Mulai Broadcast</span>
+</a>
+<a href="/withdraw" class="quick-action">
+<span class="material-symbols-outlined">payments</span>
+<span>Tarik Saldo</span>
+</a>
+</div>
+</div>
+
+<script>
+function copyRef(code) {
+  const url = window.location.origin + '/register?ref=' + code
+  navigator.clipboard.writeText(url)
+  alert('Link referral tersalin: ' + url)
+}
+</script>

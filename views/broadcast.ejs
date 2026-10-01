@@ -1,0 +1,83 @@
+<div class="page-header">
+<h1>Broadcast</h1>
+<p>Kirim pesan promosi ke database customer</p>
+</div>
+
+<% if (accounts.length === 0) { %>
+<div class="alert alert-warning">
+<span class="material-symbols-outlined">warning</span>
+Anda belum memiliki akun WhatsApp yang terhubung.
+<a href="/accounts">Hubungkan sekarang</a>
+</div>
+<% } %>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">settings</span> Pengaturan Broadcast</h2>
+<form id="broadcast-form">
+<div class="form-group">
+<label>Pilih Akun</label>
+<div class="accounts-checkboxes">
+<% accounts.forEach(function(acc) { %>
+<label class="checkbox-item">
+<input type="checkbox" name="accounts" value="<%= acc.id %>" checked>
+<span class="material-symbols-outlined">check_circle</span>
+<%= acc.phone %>
+</label>
+<% }) %>
+</div>
+</div>
+
+<div class="form-group">
+<label>Kecepatan Pengiriman</label>
+<div class="speed-options">
+<label class="speed-option">
+<input type="radio" name="speed" value="low">
+<div>
+<span class="material-symbols-outlined">speed</span>
+<strong>Low</strong>
+<small>10 detik per chat</small>
+</div>
+</label>
+<label class="speed-option">
+<input type="radio" name="speed" value="medium" checked>
+<div>
+<span class="material-symbols-outlined">bolt</span>
+<strong>Medium</strong>
+<small>5 detik per chat</small>
+</div>
+</label>
+<label class="speed-option">
+<input type="radio" name="speed" value="fast">
+<div>
+<span class="material-symbols-outlined">rocket_launch</span>
+<strong>Fast</strong>
+<small>2 detik per chat</small>
+</div>
+</label>
+</div>
+</div>
+
+<div class="btn-row">
+<button type="submit" class="btn btn-primary" <%= accounts.length === 0 ? 'disabled' : '' %>>
+<span class="material-symbols-outlined">play_arrow</span> Mulai Broadcast
+</button>
+<button type="button" id="stop-btn" class="btn btn-danger" disabled>
+<span class="material-symbols-outlined">stop</span> Stop
+</button>
+</div>
+</form>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">monitor_heart</span> Live Progress</h2>
+<div class="progress-info">
+<span id="progress-text">0 / 0 pesan</span>
+<span id="progress-percent">0%</span>
+</div>
+<div class="progress-bar"><div id="progress-fill"></div></div>
+<div class="progress-stats">
+<span class="stat-inline"><span class="material-symbols-outlined icon-success">check_circle</span> <span id="stat-sent">0</span> terkirim</span>
+<span class="stat-inline"><span class="material-symbols-outlined icon-danger">error</span> <span id="stat-failed">0</span> gagal</span>
+</div>
+<div id="live-messages" class="live-messages"></div>
+</div>

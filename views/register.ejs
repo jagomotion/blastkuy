@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar — BlastYuk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-body">
+<button id="auth-theme-toggle" class="auth-theme-btn" aria-label="Toggle theme">
+  <span class="material-symbols-outlined">dark_mode</span>
+</button>
+
+<div class="auth-wrapper">
+  <div class="auth-visual register-visual">
+    <div class="auth-visual-content">
+      <div class="auth-logo-big">
+        <span class="material-symbols-outlined">campaign</span>
+      </div>
+      <h1>Bergabung Gratis</h1>
+      <p class="auth-tagline">Mulai hasilkan uang dari WhatsApp kamu yang nganggur</p>
+
+      <div class="auth-steps">
+        <div class="auth-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <strong>Daftar Akun</strong>
+            <small>Cukup 30 detik untuk mulai</small>
+          </div>
+        </div>
+        <div class="auth-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <strong>Hubungkan WhatsApp</strong>
+            <small>Scan QR atau pairing code</small>
+          </div>
+        </div>
+        <div class="auth-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <strong>Mulai Broadcast</strong>
+            <small>Sistem kirim otomatis, kamu dibayar</small>
+          </div>
+        </div>
+        <div class="auth-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <strong>Tarik Penghasilan</strong>
+            <small>Minimal Rp 25.000 via e-wallet</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-decoration">
+        <span class="material-symbols-outlined deco-1">celebration</span>
+        <span class="material-symbols-outlined deco-2">emoji_events</span>
+        <span class="material-symbols-outlined deco-3">savings</span>
+        <span class="material-symbols-outlined deco-4">trending_up</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-logo">
+          <span class="material-symbols-outlined">person_add</span>
+        </div>
+        <h2>Buat Akun Baru</h2>
+        <p>Isi data di bawah untuk mulai</p>
+      </div>
+
+      <% if (error) { %>
+      <div class="alert alert-error">
+        <span class="material-symbols-outlined">error</span>
+        <%= error %>
+      </div>
+      <% } %>
+
+      <form method="POST" action="/register">
+        <div class="form-group">
+          <label>
+            <span class="material-symbols-outlined">badge</span>
+            Nama Lengkap
+          </label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined input-icon">person</span>
+            <input type="text" name="name" placeholder="Nama kamu" required autocomplete="name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span class="material-symbols-outlined">mail</span>
+            Email
+          </label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined input-icon">alternate_email</span>
+            <input type="email" name="email" placeholder="nama@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span class="material-symbols-outlined">phone_iphone</span>
+            Nomor WhatsApp
+          </label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined input-icon">call</span>
+            <input type="tel" name="phone" placeholder="628xxxxxxxxxx" required autocomplete="tel" pattern="[0-9]+" title="Hanya angka, format 628xxxxxxxxxx">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span class="material-symbols-outlined">lock</span>
+            Password
+          </label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined input-icon">key</span>
+            <input type="password" name="password" id="register-password" placeholder="Minimal 6 karakter" minlength="6" required autocomplete="new-password">
+            <button type="button" class="input-toggle" onclick="togglePassword('register-password', this)">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+          <span class="material-symbols-outlined">rocket_launch</span>
+          Daftar Sekarang
+        </button>
+      </form>
+
+      <div class="auth-divider">
+        <span>atau</span>
+      </div>
+
+      <p class="auth-footer">
+        Sudah punya akun?
+        <a href="/login">Masuk di sini</a>
+      </p>
+    </div>
+
+    <p class="auth-copyright">
+      <span class="material-symbols-outlined">verified</span>BlastYuk
+    </p>
+  </div>
+</div>
+
+<script src="/js/auth.js"></script>
+</body>
+</html>

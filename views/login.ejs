@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk — BlastYuk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-body">
+<button id="auth-theme-toggle" class="auth-theme-btn" aria-label="Toggle theme">
+  <span class="material-symbols-outlined">dark_mode</span>
+</button>
+
+<div class="auth-wrapper">
+  <div class="auth-visual">
+    <div class="auth-visual-content">
+      <div class="auth-logo-big">
+        <span class="material-symbols-outlined">campaign</span>
+      </div>
+      <h1>BlastYuk</h1>
+      <p class="auth-tagline">Dapat penghasilan tambahan hanya melalui WhatsApp</p>
+
+      <div class="auth-features">
+        <div class="auth-feature">
+          <span class="material-symbols-outlined">bolt</span>
+          <div>
+            <strong>Broadcast Massal</strong>
+            <small>Kirim ribuan pesan otomatis</small>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <span class="material-symbols-outlined">payments</span>
+          <div>
+            <strong>Penghasilan per Pesan</strong>
+            <small>Dibayar setiap pesan terkirim</small>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <span class="material-symbols-outlined">group_add</span>
+          <div>
+            <strong>Komisi Referral</strong>
+            <small>Bonus dari setiap undangan</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-decoration">
+        <span class="material-symbols-outlined deco-1">send</span>
+        <span class="material-symbols-outlined deco-2">chat</span>
+        <span class="material-symbols-outlined deco-3">attach_money</span>
+        <span class="material-symbols-outlined deco-4">rocket_launch</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-logo">
+          <span class="material-symbols-outlined">campaign</span>
+        </div>
+        <h2>Selamat Datang</h2>
+        <p>Masuk untuk melanjutkan ke dashboard</p>
+      </div>
+
+      <% if (error) { %>
+      <div class="alert alert-error">
+        <span class="material-symbols-outlined">error</span>
+        <%= error %>
+      </div>
+      <% } %>
+
+      <form method="POST" action="/login">
+        <div class="form-group">
+          <label>
+            <span class="material-symbols-outlined">mail</span>
+            Email
+          </label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined input-icon">alternate_email</span>
+            <input type="email" name="email" placeholder="nama@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span class="material-symbols-outlined">lock</span>
+            Password
+          </label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined input-icon">key</span>
+            <input type="password" name="password" id="login-password" placeholder="Password" required autocomplete="current-password">
+            <button type="button" class="input-toggle" onclick="togglePassword('login-password', this)">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+          <span class="material-symbols-outlined">login</span>
+          Masuk Sekarang
+        </button>
+      </form>
+
+      <div class="auth-divider">
+        <span>atau</span>
+      </div>
+
+      <p class="auth-footer">
+        Belum punya akun?
+        <a href="/register">Daftar gratis sekarang</a>
+      </p>
+    </div>
+
+    <p class="auth-copyright">
+      <span class="material-symbols-outlined">verified</span>
+      BlastYuk
+    </p>
+  </div>
+</div>
+
+<script src="/js/auth.js"></script>
+</body>
+</html>

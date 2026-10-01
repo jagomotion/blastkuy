@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1>Akun WhatsApp</h1>
+  <p>Semua akun WhatsApp dari seluruh user</p>
+</div>
+
+<div class="card">
+  <% if (accounts.length === 0) { %>
+    <p class="muted empty">Belum ada akun terhubung</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nomor</th>
+            <th>Pemilik</th>
+            <th>Email</th>
+            <th>Metode</th>
+            <th>Status</th>
+            <th>Terhubung Sejak</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% accounts.forEach(function(a) { %>
+          <tr>
+            <td><strong><%= a.phone %></strong></td>
+            <td><%= a.userName %></td>
+            <td><small class="muted"><%= a.userEmail %></small></td>
+            <td><%= a.method || '-' %></td>
+            <td>
+              <span class="badge badge-<%= a.status === 'connected' ? 'approved' : a.status === 'reconnecting' ? 'pending' : 'rejected' %>">
+                <%= a.status %>
+              </span>
+            </td>
+            <td><small><%= a.createdAt ? new Date(a.createdAt).toLocaleString('id-ID') : '-' %></small></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

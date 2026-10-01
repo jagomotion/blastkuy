@@ -1,0 +1,169 @@
+<div class="page-header">
+  <h1>Pengaturan</h1>
+  <p>Atur harga, komisi, dan template pesan promosi</p>
+</div>
+
+<% if (typeof error !== 'undefined' && error) { %>
+<div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<form method="POST" action="/admin/settings" enctype="multipart/form-data">
+  <div class="card">
+    <h2><span class="material-symbols-outlined">price_change</span> Harga & Komisi</h2>
+    <div class="grid-3">
+      <div class="form-group">
+        <label>Harga per Pesan (Rp)</label>
+        <input type="number" name="pricePerMessage" value="<%= settings.pricePerMessage %>" min="0" required>
+      </div>
+      <div class="form-group">
+        <label>Komisi Referral (Rp)</label>
+        <input type="number" name="referralCommission" value="<%= settings.referralCommission %>" min="0" required>
+      </div>
+      <div class="form-group">
+        <label>Minimal Withdraw (Rp)</label>
+        <input type="number" name="minWithdraw" value="<%= settings.minWithdraw %>" min="0" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2><span class="material-symbols-outlined">edit_note</span> Template Pesan</h2>
+
+      <div class="form-group">
+        <label>Isi Pesan</label>
+        <textarea name="text" id="text-input" rows="6" placeholder="Tulis pesan promosi di sini" required><%= settings.messageConfig.text %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Footer</label>
+        <input type="text" name="footer" id="footer-input" value="<%= settings.messageConfig.footer %>" placeholder="BlastYuk Promo">
+        <small class="muted">Teks kecil di bawah pesan</small>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="material-symbols-outlined">image</span> Gambar Promosi</h2>
+
+      <% if (settings.messageConfig.imagePath) { %>
+        <div class="current-image">
+          <img src="<%= settings.messageConfig.imagePath %>" alt="Promo">
+          <label class="checkbox-inline">
+            <input type="checkbox" name="removeImage" value="true">
+            Hapus gambar ini
+          </label>
+        </div>
+      <% } %>
+
+      <div class="form-group">
+        <label>Upload Gambar Baru</label>
+        <input type="file" name="imageFile" id="image-input" accept="image/png, image/jpeg, image/jpg, image/webp">
+        <small class="muted">Maks 5MB, format JPG/PNG/WEBP</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="material-symbols-outlined">link</span> Button URL</h2>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nama Button</label>
+        <input type="text" name="buttonText" id="buttonText-input" value="<%= settings.messageConfig.buttonText %>" placeholder="Kunjungi Website">
+      </div>
+      <div class="form-group">
+        <label>URL Tujuan</label>
+        <input type="url" name="buttonUrl" id="buttonUrl-input" value="<%= settings.messageConfig.buttonUrl %>" placeholder="https://blastyuk.com">
+      </div>
+    </div>
+  </div>
+
+  <div class="card preview-card">
+    <h2><span class="material-symbols-outlined">phone_iphone</span> Review Pesan</h2>
+    <p class="muted" style="margin-bottom:16px">Tampilan pesan yang akan diterima customer</p>
+
+    <div class="wa-preview">
+      <div class="wa-bubble">
+        <div class="wa-image-container" id="preview-image-container" style="display:none">
+          <img id="preview-image" class="wa-image" alt="Preview">
+        </div>
+        <div class="wa-caption">
+          <p id="preview-text" class="wa-text"></p>
+          <small id="preview-footer" class="wa-footer" style="display:none"></small>
+        </div>
+        <div id="preview-button" class="wa-button" style="display:none">
+          <span class="material-symbols-outlined">link</span>
+          <span id="preview-button-text"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button type="submit" class="btn btn-primary">
+      <span class="material-symbols-outlined">save</span> Simpan Pengaturan
+    </button>
+  </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const textInput = document.getElementById('text-input')
+  const footerInput = document.getElementById('footer-input')
+  const buttonTextInput = document.getElementById('buttonText-input')
+  const buttonUrlInput = document.getElementById('buttonUrl-input')
+  const imageInput = document.getElementById('image-input')
+
+  const previewImage = document.getElementById('preview-image')
+  const previewImageContainer = document.getElementById('preview-image-container')
+  const previewText = document.getElementById('preview-text')
+  const previewFooter = document.getElementById('preview-footer')
+  const previewButton = document.getElementById('preview-button')
+  const previewButtonText = document.getElementById('preview-button-text')
+
+  let uploadedImageUrl = '<%= settings.messageConfig.imagePath %>'
+
+  function updatePreview() {
+    previewText.textContent = textInput.value || 'Tulis pesan promosi di sini'
+
+    if (uploadedImageUrl) {
+      previewImage.src = uploadedImageUrl
+      previewImageContainer.style.display = 'block'
+    } else {
+      previewImageContainer.style.display = 'none'
+    }
+
+    if (footerInput.value.trim()) {
+      previewFooter.textContent = footerInput.value.trim()
+      previewFooter.style.display = 'block'
+    } else {
+      previewFooter.style.display = 'none'
+    }
+
+    if (buttonTextInput.value.trim() && buttonUrlInput.value.trim()) {
+      previewButtonText.textContent = buttonTextInput.value.trim()
+      previewButton.style.display = 'flex'
+    } else {
+      previewButton.style.display = 'none'
+    }
+  }
+
+  ;[textInput, footerInput, buttonTextInput, buttonUrlInput].forEach(function(el) {
+    el.addEventListener('input', updatePreview)
+  })
+
+  imageInput.addEventListener('change', function() {
+    const file = imageInput.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = function(e) {
+        uploadedImageUrl = e.target.result
+        updatePreview()
+      }
+      reader.readAsDataURL(file)
+    }
+  })
+
+  updatePreview()
+})
+</script>

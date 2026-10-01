@@ -1,0 +1,59 @@
+<div class="page-header">
+<h1>Permintaan Withdraw</h1>
+<p>Kelola pengajuan withdraw dari user</p>
+</div>
+
+<div class="card">
+<% if (withdrawals.length === 0) { %>
+<p class="muted empty">Belum ada permintaan withdraw</p>
+<% } else { %>
+<div class="table-wrap">
+<table class="table">
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>User</th>
+<th>Jumlah</th>
+<th>Metode</th>
+<th>Tujuan</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody>
+<% withdrawals.forEach(function(w) { %>
+<tr>
+<td><%= new Date(w.createdAt).toLocaleDateString('id-ID') %></td>
+<td><%= w.userName %></td>
+<td>Rp <%= w.amount.toLocaleString('id-ID') %></td>
+<td><%= w.method.toUpperCase() %></td>
+<td>
+<strong><%= w.accountNumber %></strong><br>
+<small class="muted"><%= w.accountName %></small>
+</td>
+<td><span class="badge badge-<%= w.status %>"><%= w.status %></span></td>
+<td class="actions">
+<% if (w.status === 'pending') { %>
+<form method="POST" action="/admin/withdrawals/<%= w.id %>" class="inline">
+<input type="hidden" name="status" value="approved">
+<button type="submit" class="btn-icon btn-icon-success" title="Setujui">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+</form>
+<form method="POST" action="/admin/withdrawals/<%= w.id %>" class="inline">
+<input type="hidden" name="status" value="rejected">
+<button type="submit" class="btn-icon btn-icon-danger" title="Tolak">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</form>
+<% } else { %>
+<span class="muted">Selesai</span>
+<% } %>
+</td>
+</tr>
+<% }) %>
+</tbody>
+</table>
+</div>
+<% } %>
+</div>

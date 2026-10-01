@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="<%= user && user.theme ? user.theme : 'light' %>">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlastYuk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-container">
+<aside class="sidebar">
+<div class="logo">
+<span class="material-symbols-outlined">campaign</span>
+<span>BlastYuk</span>
+</div>
+<nav>
+<a href="/dashboard"><span class="material-symbols-outlined">dashboard</span> Dashboard</a>
+<a href="/accounts"><span class="material-symbols-outlined">phone_iphone</span> Akun WhatsApp</a>
+<a href="/broadcast"><span class="material-symbols-outlined">send</span> Broadcast</a>
+<a href="/withdraw"><span class="material-symbols-outlined">payments</span> Withdraw</a>
+<a href="/profile"><span class="material-symbols-outlined">person</span> Profile</a>
+<% if (user && user.role === 'admin') { %>
+<a href="/admin"><span class="material-symbols-outlined">admin_panel_settings</span> Admin</a>
+<% } %>
+<a href="/logout"><span class="material-symbols-outlined">logout</span> Keluar</a>
+</nav>
+</aside>
+<main class="main-content">
+<header class="topbar">
+<div class="topbar-user">
+<span class="material-symbols-outlined">account_circle</span>
+<span><%= user ? user.name : '' %></span>
+</div>
+<button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+</header>
+<div class="content">
+<%- body %>
+</div>
+</main>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

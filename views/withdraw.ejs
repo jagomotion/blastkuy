@@ -1,0 +1,86 @@
+<div class="page-header">
+<h1>Withdraw</h1>
+<p>Tarik saldo kamu ke e-wallet favorit</p>
+</div>
+
+<div class="stats-grid">
+<div class="stat-card">
+<span class="material-symbols-outlined icon-primary">account_balance_wallet</span>
+<div>
+<h3>Rp <%= user.balance.toLocaleString('id-ID') %></h3>
+<p>Saldo Tersedia</p>
+</div>
+</div>
+<div class="stat-card">
+<span class="material-symbols-outlined icon-warning">info</span>
+<div>
+<h3>Rp <%= settings.minWithdraw.toLocaleString('id-ID') %></h3>
+<p>Minimal Withdraw</p>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">request_quote</span> Ajukan Withdraw</h2>
+<form method="POST" action="/withdraw">
+<div class="grid-2">
+<div class="form-group">
+<label>Jumlah</label>
+<input type="number" name="amount" min="<%= settings.minWithdraw %>" max="<%= user.balance %>" placeholder="25000" required>
+</div>
+<div class="form-group">
+<label>Metode</label>
+<select name="method" required>
+<option value="dana">DANA</option>
+<option value="gopay">GoPay</option>
+<option value="ovo">OVO</option>
+</select>
+</div>
+</div>
+<div class="grid-2">
+<div class="form-group">
+<label>Nomor Akun</label>
+<input type="text" name="accountNumber" placeholder="08xxxxxxxxxx" required>
+</div>
+<div class="form-group">
+<label>Nama Pemilik</label>
+<input type="text" name="accountName" placeholder="Nama sesuai rekening" required>
+</div>
+</div>
+<button type="submit" class="btn btn-primary" <%= user.balance < settings.minWithdraw ? 'disabled' : '' %>>
+<span class="material-symbols-outlined">send</span> Ajukan Withdraw
+</button>
+</form>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">history</span> Riwayat Withdraw</h2>
+<% if (withdrawals.length === 0) { %>
+<p class="muted empty">Belum ada pengajuan withdraw</p>
+<% } else { %>
+<div class="table-wrap">
+<table class="table">
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Jumlah</th>
+<th>Metode</th>
+<th>Tujuan</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<% withdrawals.forEach(function(w) { %>
+<tr>
+<td><%= new Date(w.createdAt).toLocaleDateString('id-ID') %></td>
+<td>Rp <%= w.amount.toLocaleString('id-ID') %></td>
+<td><%= w.method.toUpperCase() %></td>
+<td><%= w.accountNumber %></td>
+<td><span class="badge badge-<%= w.status %>"><%= w.status %></span></td>
+</tr>
+<% }) %>
+</tbody>
+</table>
+</div>
+<% } %>
+</div>

@@ -1,0 +1,29 @@
+{
+  "name": "blastyuk",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@itsliaaa/baileys": "^0.3.18-final",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.3",
+    "mongodb": "^7.7.0",
+    "multer": "^2.4.0",
+    "node-cache": "^5.1.2",
+    "pino": "^8.17.2",
+    "qrcode": "^1.5.3",
+    "uuid": "^9.0.0"
+  },
+  "description": "",
+  "keywords": [],
+  "author": "ZackRylsen",
+  "license": "ISC",
+  "type": "commonjs"
+}

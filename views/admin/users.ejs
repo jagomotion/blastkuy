@@ -1,0 +1,109 @@
+<div class="page-header">
+  <h1>Kelola User</h1>
+  <p>Monitoring dan kontrol semua user BlastYuk</p>
+</div>
+
+<div class="card">
+  <% if (users.length === 0) { %>
+    <p class="muted empty">Belum ada user</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Kontak</th>
+            <th>Saldo</th>
+            <th>Pesan</th>
+            <th>Akun WA</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(function(u) { %>
+          <tr>
+            <td>
+              <strong><%= u.name %></strong><br>
+              <small class="muted"><%= u.referralCode %></small>
+            </td>
+            <td>
+              <small><%= u.email %></small><br>
+              <small class="muted"><%= u.phone %></small>
+            </td>
+            <td>Rp <%= (u.balance || 0).toLocaleString('id-ID') %></td>
+            <td>
+              <span class="badge badge-approved"><%= u.messageSent %></span>
+              <span class="badge badge-rejected"><%= u.messageFailed %></span>
+            </td>
+            <td>
+              <span class="badge badge-approved"><%= u.connectedCount %></span> / <%= u.accountCount %>
+            </td>
+            <td>
+              <% if (u.isSuspended) { %>
+                <span class="badge badge-rejected">Suspended</span>
+              <% } else { %>
+                <span class="badge badge-approved">Aktif</span>
+              <% } %>
+              <% if (u.lastLogin) { %>
+                <br><small class="muted">Login: <%= new Date(u.lastLogin).toLocaleString('id-ID') %></small>
+              <% } %>
+            </td>
+            <td class="actions">
+              <button class="btn-icon" onclick="showBalanceModal('<%= u.id %>', '<%= u.name %>', <%= u.balance || 0 %>)" title="Ubah Saldo">
+                <span class="material-symbols-outlined">payments</span>
+              </button>
+              <form method="POST" action="/admin/users/<%= u.id %>/toggle-suspend" class="inline">
+                <button type="submit" class="btn-icon <%= u.isSuspended ? 'btn-icon-success' : 'btn-icon-danger' %>" title="<%= u.isSuspended ? 'Aktifkan' : 'Tangguhkan' %>">
+                  <span class="material-symbols-outlined"><%= u.isSuspended ? 'check_circle' : 'block' %></span>
+                </button>
+              </form>
+              <form method="POST" action="/admin/users/<%= u.id %>/delete" class="inline" onsubmit="return confirm('Hapus user ini permanen?')">
+                <button type="submit" class="btn-icon btn-icon-danger" title="Hapus">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<div id="balance-modal" class="modal" style="display:none">
+  <div class="modal-content">
+    <h2>Ubah Saldo User</h2>
+    <p id="modal-user-name" class="muted"></p>
+    <form method="POST" id="balance-form">
+      <div class="form-group">
+        <label>Aksi</label>
+        <select name="action" required>
+          <option value="add">Tambah Saldo</option>
+          <option value="subtract">Kurangi Saldo</option>
+          <option value="set">Set Saldo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Jumlah (Rp)</label>
+        <input type="number" name="amount" min="0" required>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn" onclick="closeModal()">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function showBalanceModal(id, name, balance) {
+  document.getElementById('modal-user-name').textContent = name + ' — Saldo saat ini: Rp ' + balance.toLocaleString('id-ID')
+  document.getElementById('balance-form').action = '/admin/users/' + id + '/balance'
+  document.getElementById('balance-modal').style.display = 'flex'
+}
+function closeModal() {
+  document.getElementById('balance-modal').style.display = 'none'
+}
+</script>

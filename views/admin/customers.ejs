@@ -1,0 +1,119 @@
+<div class="page-header">
+  <h1>Database Customer</h1>
+  <p>Kelola nomor tujuan broadcast</p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-primary">contacts</span>
+    <div>
+      <h3><%= stats.total %></h3>
+      <p>Total Nomor</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-success">check_circle</span>
+    <div>
+      <h3><%= stats.available %></h3>
+      <p>Tersedia</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-warning">task_alt</span>
+    <div>
+      <h3><%= stats.used %></h3>
+      <p>Sudah Terkirim</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon-danger">block</span>
+    <div>
+      <h3><%= stats.inactive %></h3>
+      <p>Nonaktif</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2><span class="material-symbols-outlined">upload</span> Upload Nomor</h2>
+  <form method="POST" action="/admin/customers">
+    <div class="form-group">
+      <label>Nomor Customer</label>
+      <textarea name="numbers" rows="6" placeholder="+62812345678&#10;+62898765432&#10;62811111111"></textarea>
+      <small class="muted">Satu nomor per baris. Format bebas, sistem akan membersihkan otomatis</small>
+    </div>
+    <button type="submit" class="btn btn-primary">
+      <span class="material-symbols-outlined">cloud_upload</span> Upload
+    </button>
+  </form>
+</div>
+
+<% if (stats.used > 0) { %>
+<div class="card">
+  <h2><span class="material-symbols-outlined">restart_alt</span> Reset Status</h2>
+  <p class="muted">Reset semua customer agar bisa dikirimi pesan ulang (menghapus tanda "sudah terkirim")</p>
+  <form method="POST" action="/admin/customers/reset-sent" onsubmit="return confirm('Reset semua status terkirim?')">
+    <button type="submit" class="btn">
+      <span class="material-symbols-outlined">restart_alt</span> Reset Semua
+    </button>
+  </form>
+</div>
+<% } %>
+
+<div class="card">
+  <h2><span class="material-symbols-outlined">contacts</span> Daftar Nomor</h2>
+  <% if (customers.length === 0) { %>
+    <p class="muted empty">Belum ada nomor customer</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nomor</th>
+            <th>Status</th>
+            <th>Terkirim</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% customers.forEach(function(c) { %>
+          <tr>
+            <td><%= c.phone %></td>
+            <td>
+              <% if (!c.active) { %>
+                <span class="badge badge-rejected">Nonaktif</span>
+              <% } else if (c.sent) { %>
+                <span class="badge badge-pending">Sudah Terkirim</span>
+              <% } else { %>
+                <span class="badge badge-approved">Tersedia</span>
+              <% } %>
+            </td>
+            <td>
+              <% if (c.sent) { %>
+                <small class="muted">
+                  <%= c.sentByName || '-' %><br>
+                  <%= new Date(c.sentAt).toLocaleString('id-ID') %>
+                </small>
+              <% } else { %>
+                <small class="muted">-</small>
+              <% } %>
+            </td>
+            <td class="actions">
+              <form method="POST" action="/admin/customers/<%= c.id %>/toggle" class="inline">
+                <button type="submit" class="btn-icon" title="Toggle aktif">
+                  <span class="material-symbols-outlined">toggle_on</span>
+                </button>
+              </form>
+              <form method="POST" action="/admin/customers/<%= c.id %>/delete" class="inline">
+                <button type="submit" class="btn-icon btn-icon-danger" title="Hapus">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

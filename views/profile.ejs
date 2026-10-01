@@ -1,0 +1,67 @@
+<div class="page-header">
+<h1>Profile</h1>
+<p>Kelola informasi akun kamu</p>
+</div>
+
+<div class="grid-2">
+<div class="card">
+<h2><span class="material-symbols-outlined">badge</span> Informasi Akun</h2>
+<div class="info-list">
+<div class="info-item">
+<span class="muted">Nama</span>
+<strong><%= user.name %></strong>
+</div>
+<div class="info-item">
+<span class="muted">Email</span>
+<strong><%= user.email %></strong>
+</div>
+<div class="info-item">
+<span class="muted">Nomor WhatsApp</span>
+<strong><%= user.phone %></strong>
+</div>
+<div class="info-item">
+<span class="muted">Bergabung</span>
+<strong><%= new Date(user.createdAt).toLocaleDateString('id-ID') %></strong>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">insights</span> Statistik</h2>
+<div class="info-list">
+<div class="info-item">
+<span class="muted">Total Pesan Terkirim</span>
+<strong><%= sent %></strong>
+</div>
+<div class="info-item">
+<span class="muted">Saldo</span>
+<strong>Rp <%= user.balance.toLocaleString('id-ID') %></strong>
+</div>
+<div class="info-item">
+<span class="muted">Komisi Referral</span>
+<strong>Rp <%= (user.referralEarnings || 0).toLocaleString('id-ID') %></strong>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2><span class="material-symbols-outlined">share</span> Link Referral</h2>
+<p class="muted">Bagikan link ini, dapatkan komisi setiap pesan sukses dari teman yang kamu undang</p>
+<div class="ref-code">
+<span id="ref-url"><%= typeof req !== 'undefined' ? '' : '' %></span>
+<input type="text" readonly value="<%= user.referralCode %>" id="ref-code-input">
+<button class="btn-icon" onclick="copyReferral()">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+</div>
+</div>
+
+<script>
+function copyReferral() {
+  const code = document.getElementById('ref-code-input').value
+  const url = window.location.origin + '/register?ref=' + code
+  navigator.clipboard.writeText(url)
+  alert('Tersalin: ' + url)
+}
+</script>
